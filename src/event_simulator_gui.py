@@ -56,7 +56,9 @@ class EventSimulatorGUI(ctk.CTkFrame):
         self.notebook.pack(expand=True, fill="both")
 
         external_event_config = {
-            "events": [x for x in self._events if x["type"] in ["activity"]],
+            "events": [
+                x for x in self._events if x["hasEventType"]["name"] in ["external"]
+            ],
             "ui_confs": EVENT_UI_DEFINITIONS,
             "icons": self._config["icons"],
         }
@@ -68,7 +70,11 @@ class EventSimulatorGUI(ctk.CTkFrame):
 
         scheduled_event_config = {
             "table": {
-                "events": [x for x in EVENT_DEFINITIONS if x["type"] in ["scheduled"]],
+                "events": [
+                    x
+                    for x in EVENT_DEFINITIONS
+                    if x["hasEventType"]["name"] in ["periodic"]
+                ],
                 "icons": self._config["icons"],
             },
             "clock": {

@@ -15,7 +15,7 @@ from src.event_definition import EVENT_DEFINITIONS
 
 if __name__ != "__main__":
     from .event_table import ScheduledEventTable
-    from .virtual_clock import VirtualClockWidget
+    from .virtual_clock_widget import VirtualClockWidget
 
 
 class ScheduledEventWidget(ctk.CTkFrame):

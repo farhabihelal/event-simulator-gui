@@ -12,7 +12,7 @@ from src.icon_db import IconDB
 from src.event_definition import EVENT_DEFINITIONS, EVENT_UI_DEFINITIONS
 from src.schedule import Schedule
 
-from src.ui.virtual_clock import VirtualClockWidget
+from src.ui.virtual_clock_widget import VirtualClockWidget
 from src.ui.base_event import BaseEventGUI
 
 
@@ -96,7 +96,13 @@ class ScheduledEventTableItem(BaseEventGUI):
         self._clock.callback["on_update"].append(self.on_clock_update)
         self._clock.callback["on_stop"].append(self.on_clock_stop)
 
-        self._schedule = Schedule(self._config["event"]["parameters"]["schedule"])
+        self._schedule = Schedule(
+            [
+                x["hasValue"]
+                for x in self._config["event"]["hasEventParameter"]
+                if x["hasKey"] == "schedule"
+            ][0]
+        )
 
         self.cb_state = ctk.CTkCheckBox(
             master=self,

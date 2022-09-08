@@ -1,6 +1,10 @@
+import rospy
+
 from datetime import datetime
 import threading
 from time import sleep, time
+
+# from rosgraph_msgs import Clock
 
 
 class VirtualClock:
@@ -23,6 +27,10 @@ class VirtualClock:
 
         self._updated_flag_lock = threading.Lock()
         self._updated_flag = False
+
+        # self._clock_publisher = rospy.Publisher(
+        #     "/clock", Clock, latch=False, queue_size=1
+        # )
 
     def start(self):
         self._time = time()

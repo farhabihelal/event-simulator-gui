@@ -1,6 +1,8 @@
+from datetime import datetime
 import json
 import logging
 import random
+from uuid import uuid4
 
 import customtkinter as ctk
 
@@ -20,7 +22,7 @@ class BaseEventGUI(ctk.CTkFrame):
         self.enabled = True
 
         self.publisher = rospy.Publisher(
-            "/strawberry/kb/event", Event, latch=False, queue_size=1
+            self._event["hasEventSource"]["topic"], Event, latch=False, queue_size=1
         )
 
     def publish(self):
@@ -37,12 +39,73 @@ class BaseEventGUI(ctk.CTkFrame):
             logging.debug(f"Publish Ignored : {self._event['name']} is disabled.")
 
     def get_event(self) -> dict:
+        now = datetime.now()
+
         return {
-            "id": self._event["id"],
-            "parameters": self.get_event_parameters(),
+            "id": uuid4().hex,
+            "definitionId": self._event["id"],
+            "hasTimeInverval": {
+                "hasIntervalDate": f"{now.strftime('%Y-%m-%d')}",
+                "hasIntervalTime": f"{now.strftime('%H-%M-%S')}",
+            },
+            "hasActivity": self.get_event_activity(),
+            "hasEventParameter": self.get_event_parameters(),
         }
 
-    def get_event_parameters(self):
+    def get_event_activity(self):
+        event_activity = {}
+
+        if self._event["name"] == "entering-home":
+            event_activity = {}
+
+        elif self._event["name"] == "leaving-home":
+            event_activity = {}
+
+        elif self._event["name"] == "breakfast-reminder":
+            event_activity = {
+                "id": uuid4().hex,
+                "isEating": {
+                    "id": uuid4().hex,
+                    "name": "breakfast",
+                    "hasFood": [
+                        {
+                            "id": uuid4().hex,
+                            "name": "Cereal",
+                        },
+                        {
+                            "id": uuid4().hex,
+                            "name": "Toast",
+                        },
+                    ],
+                },
+            }
+
+        elif self._event["name"] == "dinner-reminder":
+            event_activity = {
+                "id": uuid4().hex,
+                "isEating": {
+                    "id": uuid4().hex,
+                    "name": "dinner",
+                    "hasFood": [
+                        {
+                            "id": uuid4().hex,
+                            "name": "Fried Chicken",
+                        },
+                        {
+                            "id": uuid4().hex,
+                            "name": "Salad",
+                        },
+                        {
+                            "id": uuid4().hex,
+                            "name": "Rice",
+                        },
+                    ],
+                },
+            }
+
+        return event_activity
+
+    def get_event_parameters(self) -> list:
         event_parameters = {}
 
         if self._event["name"] == "medicine-reminder":
@@ -142,4 +205,7 @@ class BaseEventGUI(ctk.CTkFrame):
                 "user_id": "0",
             }
 
-        return event_parameters
+        return [
+            {"id": uuid4().hex, "hasKey": k, "hasValue": v}
+            for k, v in event_parameters.items()
+        ]
