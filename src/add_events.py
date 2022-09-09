@@ -12,7 +12,7 @@ if __name__ == "__main__":
     for e in EVENT_DEFINITIONS:
         req = QueryRequest()
         req.query_type.value = QueryType.CREATE
-        req.ontology_type.value = OntologyType.EVENT
+        req.ontology_type.value = OntologyType.EVENTDEFINITION
         req.parameters.payload = json.dumps(e)
 
         res = kb_query_client(req)

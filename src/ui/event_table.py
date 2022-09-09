@@ -183,6 +183,7 @@ class ScheduledEventTableItem(BaseEventGUI):
                     and _time.minute == self._schedule._datetime.minute
                 ):
                     self.publish()
+                    self.cb_state.after(250, self.reset)
             else:
                 if (
                     _datetime.date() == self._schedule._datetime.date()
@@ -204,24 +205,21 @@ class ScheduledEventTableItem(BaseEventGUI):
 
         print(f"{self.event_name} published.")
 
-        if self._schedule.daily:
-            pass
+        self.cb_state.deselect()
+        self.cb_state.configure(state=tk.DISABLED)
 
-        else:
-            self.cb_state.deselect()
-            self.cb_state.configure(state=tk.DISABLED)
-
-            self.configure(bg_color="green")
-            self.lbl_event_name.configure(bg_color="green")
-            self.lbl_schedule.configure(text_color="green")
+        self.configure(bg_color="green")
+        self.lbl_event_name.configure(bg_color="green")
+        self.lbl_schedule.configure(text_color="green")
 
     def reset(self):
         self.enabled = True
         self.cb_state.select()
+        self.cb_state.configure(state=tk.NORMAL)
 
         self.configure(bg_color=None)
         self.lbl_event_name.configure(bg_color=None)
-        self.lbl_schedule.configure(text_color=None)
+        self.lbl_schedule.configure(text_color="white")
 
     def __del__(self):
         self.enabled = False

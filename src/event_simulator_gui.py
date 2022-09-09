@@ -57,7 +57,7 @@ class EventSimulatorGUI(ctk.CTkFrame):
 
         external_event_config = {
             "events": [
-                x for x in self._events if x["hasEventType"]["name"] in ["external"]
+                x for x in self._events if x["hasEventType"]["category"] in ["external"]
             ],
             "ui_confs": EVENT_UI_DEFINITIONS,
             "icons": self._config["icons"],
@@ -73,7 +73,7 @@ class EventSimulatorGUI(ctk.CTkFrame):
                 "events": [
                     x
                     for x in EVENT_DEFINITIONS
-                    if x["hasEventType"]["name"] in ["periodic"]
+                    if x["hasEventType"]["category"] in ["periodic"]
                 ],
                 "icons": self._config["icons"],
             },
@@ -114,7 +114,7 @@ if __name__ == "__main__":
 
     app = ctk.CTk()
     app.title("event simulator".title())
-    app.geometry("900x1300")
+    app.geometry("600x800")
     app.resizable(False, False)
 
     icon_db = IconDB(f"{os.path.dirname(__file__)}/../res/icons")
