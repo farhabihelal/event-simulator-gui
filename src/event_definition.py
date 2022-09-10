@@ -5,7 +5,7 @@ def gen_id() -> str:
     return uuid.uuid4().hex
 
 
-EVENT_TYPES = ["activity", "scheduled"]
+EVENT_TYPES = ["external", "periodic"]
 
 
 EVENT_DEFINITIONS = [
@@ -314,7 +314,7 @@ EVENT_DEFINITIONS = [
             {
                 "id": gen_id(),
                 "hasKey": "schedule",
-                "hasValue": "* *-*-* 19:00:00",
+                "hasValue": "* *-*-* 15:30:00",
             },
             {
                 "id": gen_id(),

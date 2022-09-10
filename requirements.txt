@@ -1,0 +1,10 @@
+rich
+rospy
+PyYAML
+rospkg
+tabulate
+plotly
+numpy
+matplotlib
+customtkinter
+black

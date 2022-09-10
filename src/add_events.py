@@ -1,4 +1,5 @@
 if __name__ == "__main__":
+
     import json
     import rospy
 
@@ -18,3 +19,5 @@ if __name__ == "__main__":
         res = kb_query_client(req)
 
         print(res)
+
+    print("DONE")

@@ -114,7 +114,7 @@ if __name__ == "__main__":
 
     app = ctk.CTk()
     app.title("event simulator".title())
-    app.geometry("600x800")
+    app.geometry("620x800")
     app.resizable(False, False)
 
     icon_db = IconDB(f"{os.path.dirname(__file__)}/../res/icons")

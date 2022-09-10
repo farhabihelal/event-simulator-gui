@@ -1,0 +1,13 @@
+<launch>
+    <arg name="pkg_name"                            default="event_simulator_gui" />
+    <arg name="name"                                default="event_simulator_gui" />
+    <arg name="required"                            default="false" />
+    
+    <!-- determines the length of a virtual second (seconds) -->
+    <arg name="virtual_second"                    default="$(eval 1 / 7200)" />
+    
+    <node pkg="$(arg pkg_name)" name="$(arg name)" type="main.py" output="screen" required="$(arg required)" args="--venv $(find event_simulator_gui)/env --script src/$(arg name).py">
+        <param name="virtual_second"              value="$(arg virtual_second)"/>
+    </node>
+
+</launch>
