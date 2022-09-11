@@ -43,7 +43,7 @@ class BaseEventGUI(ctk.CTkFrame):
 
         return {
             "id": uuid4().hex,
-            "definitionId": self._event["id"],
+            "definitionID": self._event["id"],
             "hasTimeInterval": {
                 "hasIntervalDate": f"{now.strftime('%Y-%m-%d')}",
                 "hasIntervalTime": f"{now.strftime('%H-%M-%S')}",
