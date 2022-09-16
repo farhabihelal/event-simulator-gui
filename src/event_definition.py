@@ -42,54 +42,48 @@ EVENT_DEFINITIONS = [
     #         },
     #     ],
     # },
-    # {
-    #     "id": "1",
-    #     "name": "entering-home",
-    #     "description": "Alert when user has entered home.",
-    #     "hasEventType": {
-    #         "id": "0000",
-    #         "category": "external",
-    #     },
-    #     "hasEventSource": {
-    #         "id": "000",
-    #         "module_name": "event_simulator_gui",
-    #         "topic": "/strawberry/kb/event",
-    #     },
-    #     "targetModules": [
-    #         "strawberry-ros-dialog",
-    #     ],
-    #     "hasEventParameter": [
-    #         {
-    #             "id": gen_id(),
-    #             "hasKey": "intent_name",
-    #             "hasValue": "event-handler-entering-home",
-    #         },
-    #     ],
-    # },
-    # {
-    #     "id": "2",
-    #     "name": "leaving-home",
-    #     "description": "Alert when user is leaving.",
-    #     "hasEventType": {
-    #         "id": "0000",
-    #         "category": "external",
-    #     },
-    #     "hasEventSource": {
-    #         "id": "000",
-    #         "module_name": "event_simulator_gui",
-    #         "topic": "/strawberry/kb/event",
-    #     },
-    #     "targetModules": [
-    #         "strawberry-ros-dialog",
-    #     ],
-    #     "hasEventParameter": [
-    #         {
-    #             "id": gen_id(),
-    #             "hasKey": "intent_name",
-    #             "hasValue": "event-handler-leaving-home",
-    #         },
-    #     ],
-    # },
+    {
+        "id": "1",
+        "name": "entering-home",
+        "description": "Alert when user has entered home.",
+        "eventType": "external",
+        "hasEventSource": {
+            "id": "000",
+            "module_name": "event_simulator_gui",
+            "topic": "/strawberry/kb/event",
+        },
+        "targetModules": [
+            "strawberry-ros-dialog",
+        ],
+        "hasEventParameter": [
+            {
+                "id": gen_id(),
+                "hasKey": "intent_name",
+                "hasValue": "event-handler-entering-home",
+            },
+        ],
+    },
+    {
+        "id": "2",
+        "name": "leaving-home",
+        "description": "Alert when user is leaving.",
+        "eventType": "external",
+        "hasEventSource": {
+            "id": "000",
+            "module_name": "event_simulator_gui",
+            "topic": "/strawberry/kb/event",
+        },
+        "targetModules": [
+            "strawberry-ros-dialog",
+        ],
+        "hasEventParameter": [
+            {
+                "id": gen_id(),
+                "hasKey": "intent_name",
+                "hasValue": "event-handler-leaving-home",
+            },
+        ],
+    },
     # {
     #     "id": "3",
     #     "name": "rain-alert",
@@ -240,10 +234,7 @@ EVENT_DEFINITIONS = [
         "id": "13",
         "name": "morning-greeting",
         "description": "Morning Greeting.",
-        "hasEventType": {
-            "id": "0000",
-            "category": "external",
-        },
+        "eventType": "external",
         "hasEventSource": {
             "id": "000",
             "module_name": "event_simulator_gui",
@@ -269,10 +260,7 @@ EVENT_DEFINITIONS = [
         "id": "11",
         "name": "breakfast-reminder",
         "description": "Breakfast reminder.",
-        "hasEventType": {
-            "id": "0001",
-            "category": "periodic",
-        },
+        "eventType": "periodic",
         "hasEventSource": {
             "id": "000",
             "module_name": "event_simulator_gui",
@@ -285,7 +273,7 @@ EVENT_DEFINITIONS = [
             {
                 "id": gen_id(),
                 "hasKey": "schedule",
-                "hasValue": "* *-*-* 08:00:00",
+                "hasValue": "* *-*-* 23:00:00",
             },
             {
                 "id": gen_id(),
@@ -298,10 +286,7 @@ EVENT_DEFINITIONS = [
         "id": "15",
         "name": "lunch-reminder",
         "description": "Lunch Reminder",
-        "hasEventType": {
-            "id": "0001",
-            "category": "periodic",
-        },
+        "eventType": "periodic",
         "hasEventSource": {
             "id": "000",
             "module_name": "event_simulator_gui",
@@ -314,7 +299,7 @@ EVENT_DEFINITIONS = [
             {
                 "id": gen_id(),
                 "hasKey": "schedule",
-                "hasValue": "* *-*-* 15:30:00",
+                "hasValue": "* *-*-* 19:00:00",
             },
             {
                 "id": gen_id(),
@@ -327,10 +312,7 @@ EVENT_DEFINITIONS = [
         "id": "12",
         "name": "dinner-reminder",
         "description": "Dinner reminder",
-        "hasEventType": {
-            "id": "0001",
-            "category": "periodic",
-        },
+        "eventType": "periodic",
         "hasEventSource": {
             "id": "000",
             "module_name": "event_simulator_gui",
@@ -343,7 +325,7 @@ EVENT_DEFINITIONS = [
             {
                 "id": gen_id(),
                 "hasKey": "schedule",
-                "hasValue": "* *-*-* 20:00:00",
+                "hasValue": "* *-*-* 21:00:00",
             },
             {
                 "id": gen_id(),
@@ -356,10 +338,7 @@ EVENT_DEFINITIONS = [
         "id": "14",
         "name": "night-greeting",
         "description": "Night Greeting",
-        "hasEventType": {
-            "id": "0000",
-            "category": "external",
-        },
+        "eventType": "external",
         "hasEventSource": {
             "id": "000",
             "module_name": "event_simulator_gui",

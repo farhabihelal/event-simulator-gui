@@ -46,89 +46,12 @@ class BaseEventGUI(ctk.CTkFrame):
             "definitionID": self._event["id"],
             "hasTimeInterval": {
                 "hasIntervalDate": f"{now.strftime('%Y-%m-%d')}",
-                "hasIntervalTime": f"{now.strftime('%H-%M-%S')}",
+                "hasIntervalTime": f"{now.strftime('%H:%M:%S')}",
             },
-            # "hasActivity": self.get_event_activity(),
+            "hasEatingActivity": None,
+            "isAway": None,
             "hasEventParameter": self.get_event_parameters(),
         }
-
-    def get_event_activity(self):
-        event_activity = {}
-
-        if self._event["name"] == "entering-home":
-            event_activity = {
-                "id": uuid4().hex,
-                "name": "entering-home",
-            }
-
-        elif self._event["name"] == "leaving-home":
-            event_activity = {
-                "id": uuid4().hex,
-                "name": "leaving-home",
-            }
-
-        elif self._event["name"] == "breakfast-reminder":
-            event_activity = {
-                # "id": uuid4().hex,
-                # "name": "breakfast",
-                # "hasMeal": {
-                #     "id": uuid4().hex,
-                #     "hasFood": [
-                #         {
-                #             "id": uuid4().hex,
-                #             "name": "Cereal",
-                #         },
-                #         {
-                #             "id": uuid4().hex,
-                #             "name": "Toast",
-                #         },
-                #     ],
-                # },
-            }
-
-        elif self._event["name"] == "lunch-reminder":
-            event_activity = {
-                # "id": uuid4().hex,
-                # "name": "lunch",
-                # "hasMeal": {
-                #     "id": uuid4().hex,
-                #     "hasFood": [
-                #         {
-                #             "id": uuid4().hex,
-                #             "name": "Burger",
-                #         },
-                #         {
-                #             "id": uuid4().hex,
-                #             "name": "Coke",
-                #         },
-                #     ],
-                # },
-            }
-
-        elif self._event["name"] == "dinner-reminder":
-            event_activity = {
-                # "id": uuid4().hex,
-                # "name": "dinner",
-                # "hasMeal": {
-                #     "id": uuid4().hex,
-                #     "hasFood": [
-                #         {
-                #             "id": uuid4().hex,
-                #             "name": "Fried Chicken",
-                #         },
-                #         {
-                #             "id": uuid4().hex,
-                #             "name": "Salad",
-                #         },
-                #         {
-                #             "id": uuid4().hex,
-                #             "name": "Rice",
-                #         },
-                #     ],
-                # },
-            }
-
-        return event_activity
 
     def get_event_parameters(self) -> list:
         event_parameters = {
@@ -144,15 +67,15 @@ class BaseEventGUI(ctk.CTkFrame):
         #         "user_id": "0",
         #     }
 
-        # elif self._event["name"] == "entering-home":
-        #     event_parameters = {
-        #         "user_id": "0",
-        #     }
+        if self._event["name"] == "entering-home":
+            event_parameters = {
+                "user_id": "0",
+            }
 
-        # elif self._event["name"] == "leaving-home":
-        #     event_parameters = {
-        #         "user_id": "0",
-        #     }
+        elif self._event["name"] == "leaving-home":
+            event_parameters = {
+                "user_id": "0",
+            }
 
         # elif self._event["name"] == "rain-alert":
         #     event_parameters = {
@@ -222,7 +145,7 @@ class BaseEventGUI(ctk.CTkFrame):
         #         "user_id": "0",
         #     }
 
-        if self._event["name"] == "breakfast-reminder":
+        elif self._event["name"] == "breakfast-reminder":
             pass
 
         elif self._event["name"] == "lunch-reminder":

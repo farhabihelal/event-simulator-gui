@@ -56,9 +56,7 @@ class EventSimulatorGUI(ctk.CTkFrame):
         self.notebook.pack(expand=True, fill="both")
 
         external_event_config = {
-            "events": [
-                x for x in self._events if x["hasEventType"]["category"] in ["external"]
-            ],
+            "events": [x for x in self._events if x["eventType"] == "external"],
             "ui_confs": EVENT_UI_DEFINITIONS,
             "icons": self._config["icons"],
         }
@@ -71,9 +69,7 @@ class EventSimulatorGUI(ctk.CTkFrame):
         scheduled_event_config = {
             "table": {
                 "events": [
-                    x
-                    for x in EVENT_DEFINITIONS
-                    if x["hasEventType"]["category"] in ["periodic"]
+                    x for x in EVENT_DEFINITIONS if x["eventType"] == "periodic"
                 ],
                 "icons": self._config["icons"],
             },
@@ -114,7 +110,7 @@ if __name__ == "__main__":
 
     app = ctk.CTk()
     app.title("event simulator".title())
-    app.geometry("620x800")
+    app.geometry("820x800")
     app.resizable(False, False)
 
     icon_db = IconDB(f"{os.path.dirname(__file__)}/../res/icons")
