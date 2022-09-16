@@ -1,5 +1,6 @@
 import os
 
+from pydispatch import dispatcher
 import tkinter as tk
 import tkinter.ttk as ttk
 
@@ -20,6 +21,12 @@ from ui.scheduled_event_widget import (
 
 # from strawberry_dialogue_knowrob.msg import Event, QueryType, OntologyType
 # from strawberry_dialogue_knowrob.srv import Query, QueryRequest, QueryResponse
+
+from event_simulator_gui.srv import (
+    ClockCommand,
+    ClockCommandRequest,
+    ClockCommandResponse,
+)
 
 from event_definition import EVENT_DEFINITIONS, EVENT_TYPES, EVENT_UI_DEFINITIONS
 
@@ -75,8 +82,10 @@ class EventSimulatorGUI(ctk.CTkFrame):
             },
             "clock": {
                 "vclock": {
-                    "virtual_second": 1 / 240,
-                    "loop_rate": 1000,
+                    "virtual_second": 60 / (4 * 60 * 60),
+                    "loop_rate": 200,
+                    "refresh_rate": 1000,
+                    "initial_time": "2122-09-09 05:00:00",
                 },
                 "icons": {
                     "play": icon_db.icons["forward-fast-solid-32"],
@@ -99,7 +108,27 @@ class EventSimulatorGUI(ctk.CTkFrame):
             text="scheduled events".title(),
         )
 
+    def handle_clock_command(self, request):
+
+        command = request.command.lower()
+
+        if command == "start":
+            dispatcher.send("clock_start")
+
+        elif command == "stop":
+            dispatcher.send("clock_stop")
+
+        elif command == "reset":
+            dispatcher.send("clock_reset")
+
+        elif command == "fast_forward":
+            dispatcher.send("clock_fast_forward")
+
+        return ClockCommandResponse()
+
     def init_ros(self):
+
+        rospy.Service("/vclock/cmd", ClockCommand, self.handle_clock_command)
         rospy.init_node("event_simulator_gui")
 
 

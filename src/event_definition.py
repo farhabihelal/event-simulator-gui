@@ -273,7 +273,7 @@ EVENT_DEFINITIONS = [
             {
                 "id": gen_id(),
                 "hasKey": "schedule",
-                "hasValue": "* *-*-* 23:00:00",
+                "hasValue": "* *-*-* 08:00:00",
             },
             {
                 "id": gen_id(),
@@ -299,7 +299,7 @@ EVENT_DEFINITIONS = [
             {
                 "id": gen_id(),
                 "hasKey": "schedule",
-                "hasValue": "* *-*-* 19:00:00",
+                "hasValue": "* *-*-* 13:00:00",
             },
             {
                 "id": gen_id(),
@@ -325,7 +325,7 @@ EVENT_DEFINITIONS = [
             {
                 "id": gen_id(),
                 "hasKey": "schedule",
-                "hasValue": "* *-*-* 21:00:00",
+                "hasValue": "* *-*-* 20:00:00",
             },
             {
                 "id": gen_id(),

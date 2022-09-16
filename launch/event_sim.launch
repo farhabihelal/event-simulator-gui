@@ -1,6 +1,6 @@
 <launch>
     <arg name="pkg_name"                            default="event_simulator_gui" />
-    <arg name="name"                                default="event_simulator_gui" />
+    <arg name="name"                                default="gui" />
     <arg name="required"                            default="false" />
     
     <!-- determines the length of a virtual second (seconds) -->

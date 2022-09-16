@@ -12,8 +12,22 @@ class VirtualClock:
         super().__init__()
 
         self.config = config
-        self._sleep_time = 1 / self.config.get("loop_rate", 100.0)
-        self._time = time()
+        self._sleep_time = 1 / self.config.get("refresh_rate", 100.0)
+        self._virtual_second = self.config.get("virtual_second", 60 / (8 * 60 * 60))
+        self.loop_rate = 1 / self.config.get("loop_rate", 200)
+
+        self._initial_time = (
+            time()
+            if not self.config.get("initial_time")
+            else datetime.strptime(
+                self.config.get("initial_time"),
+                # f"{datetime.now().strftime('%Y-%m-%d')} {self.config.get('initial_time', '00:00:00')}",
+                "%Y-%m-%d %H:%M:%S",
+            ).timestamp()
+        )
+        self._time = self._initial_time
+
+        self._launch_time = time()
         self.running = False
 
         self._th_update = None
@@ -25,6 +39,8 @@ class VirtualClock:
             "on_stop": [],
         }
 
+        self._clock_lock = threading.Lock()
+
         self._updated_flag_lock = threading.Lock()
         self._updated_flag = False
 
@@ -33,7 +49,7 @@ class VirtualClock:
         # )
 
     def start(self):
-        self._time = time()
+        # self._time = time()
         self.running = True
 
         self.run_callbacks(self.callback["on_start"])
@@ -47,6 +63,9 @@ class VirtualClock:
         self._th_update.start()
 
     def stop(self):
+        if not self.running:
+            return
+
         self.running = False
 
         if self._th_update:
@@ -59,10 +78,14 @@ class VirtualClock:
 
         self.run_callbacks(self.callback["on_stop"])
 
+    def reset(self):
+        self.stop()
+        self._time = self._initial_time
+
     def run(self):
         while self.running:
-            sleep(self.config["virtual_second"])
-            self._time += 1
+            sleep(self.loop_rate)
+            self._time += self.loop_rate * (1 / self.virtual_second)
             with self._updated_flag_lock:
                 self._updated_flag = True
 
@@ -82,8 +105,18 @@ class VirtualClock:
             sleep(self._sleep_time)
 
     @property
+    def virtual_second(self):
+        return self._virtual_second
+
+    @virtual_second.setter
+    def virtual_second(self, value):
+        with self._clock_lock:
+            self._virtual_second = value
+
+    @property
     def time(self) -> int:
-        return self._time if self.running else int(time())
+        return int(self._time)
+        # if self.running else self._time + (time() - self._launch_time)
 
     def __repr__(self) -> str:
         return datetime.fromtimestamp(self.time).strftime("%Y-%m-%d %H:%M:%S")
@@ -96,7 +129,9 @@ if __name__ == "__main__":
 
     config = {
         "loop_rate": 1000.0,
-        "virtual_second": 1 / 3600,
+        "virtual_second": 60 / (8 * 60 * 60),  # 1 real minute == 4 sim hours
+        "initial_time": "2100-10-10 05:00:00",
+        "refresh_rate": 200,
     }
     vc = VirtualClock(config)
 
@@ -108,6 +143,6 @@ if __name__ == "__main__":
 
     vc.start()
 
-    sleep(5)
+    sleep(60)
 
     vc.stop()

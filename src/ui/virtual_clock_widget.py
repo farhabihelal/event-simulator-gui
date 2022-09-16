@@ -13,6 +13,8 @@ import customtkinter as ctk
 from src.virtual_clock import VirtualClock
 from src.icon_db import IconDB
 
+from pydispatch import dispatcher
+
 
 class VirtualClockWidget(ctk.CTkFrame):
     def __init__(self, config, **kwargs) -> None:
@@ -28,6 +30,13 @@ class VirtualClockWidget(ctk.CTkFrame):
             "on_update": [],
             "on_stop": [],
         }
+
+        dispatcher.connect(receiver=self.on_clock_start, signal="clock_start")
+        dispatcher.connect(receiver=self.on_clock_stop, signal="clock_stop")
+        dispatcher.connect(receiver=self.on_clock_reset, signal="clock_reset")
+        dispatcher.connect(
+            receiver=self.on_clock_fast_forward, signal="clock_fast_forward"
+        )
 
         self.clock.callback["on_start"] = self.callback["on_start"]
         self.clock.callback["on_update"] = self.callback["on_update"]
@@ -67,6 +76,22 @@ class VirtualClockWidget(ctk.CTkFrame):
             self.btn_start_stop.configure(image=self._icons["stop"])
             self.clock.start()
 
+    def on_clock_start(self):
+        if not self.clock.running:
+            self.on_button_click()
+
+    def on_clock_stop(self):
+        if self.clock.running:
+            self.on_button_click()
+
+    def on_clock_reset(self):
+        self.clock.virtual_second = 60 / (4 * 60 * 60)
+        self.clock.reset()
+
+    def on_clock_fast_forward(self):
+        ff_multiplier = 2
+        self.clock.virtual_second = 60 / (ff_multiplier * 4 * 60 * 60)
+
 
 if __name__ == "__main__":
 
@@ -81,8 +106,10 @@ if __name__ == "__main__":
 
     config = {
         "vclock": {
-            "virtual_second": 1 / 7200,
-            "loop_rate": 1000,
+            "virtual_second": 60 / (4 * 60 * 60),
+            "loop_rate": 200,
+            "refresh_rate": 1000,
+            "initial_time": "2100-10-10 05:00:00",
         },
         "icons": {
             "play": icon_db.icons["forward-fast-solid-32"],
