@@ -121,8 +121,17 @@ class EventSimulatorGUI(ctk.CTkFrame):
         elif command == "reset":
             dispatcher.send("clock_reset")
 
-        elif command == "fast_forward":
-            dispatcher.send("clock_fast_forward")
+        elif command == "normal":
+            dispatcher.send("clock_set_speed", multiplier=1)
+
+        elif command == "fast":
+            dispatcher.send("clock_set_speed", multiplier=4)
+
+        elif command == "faster":
+            dispatcher.send("clock_set_speed", multiplier=8)
+
+        elif command == "fastest":
+            dispatcher.send("clock_set_speed", multiplier=16)
 
         return ClockCommandResponse()
 

@@ -34,9 +34,7 @@ class VirtualClockWidget(ctk.CTkFrame):
         dispatcher.connect(receiver=self.on_clock_start, signal="clock_start")
         dispatcher.connect(receiver=self.on_clock_stop, signal="clock_stop")
         dispatcher.connect(receiver=self.on_clock_reset, signal="clock_reset")
-        dispatcher.connect(
-            receiver=self.on_clock_fast_forward, signal="clock_fast_forward"
-        )
+        dispatcher.connect(receiver=self.on_clock_set_speed, signal="clock_set_speed")
 
         self.clock.callback["on_start"] = self.callback["on_start"]
         self.clock.callback["on_update"] = self.callback["on_update"]
@@ -85,12 +83,12 @@ class VirtualClockWidget(ctk.CTkFrame):
             self.on_button_click()
 
     def on_clock_reset(self):
-        self.clock.virtual_second = 60 / (4 * 60 * 60)
         self.clock.reset()
+        self.btn_start_stop.configure(image=self._icons["play"])
+        self.clock.virtual_second = 60 / (4 * 60 * 60)
 
-    def on_clock_fast_forward(self):
-        ff_multiplier = 2
-        self.clock.virtual_second = 60 / (ff_multiplier * 4 * 60 * 60)
+    def on_clock_set_speed(self, multiplier):
+        self.clock.virtual_second = 60 / (multiplier * 4 * 60 * 60)
 
 
 if __name__ == "__main__":

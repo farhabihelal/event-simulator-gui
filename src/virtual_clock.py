@@ -4,7 +4,7 @@ from datetime import datetime
 import threading
 from time import sleep, time
 
-# from rosgraph_msgs import Clock
+from rosgraph_msgs.msg import Clock
 
 
 class VirtualClock:
@@ -44,9 +44,11 @@ class VirtualClock:
         self._updated_flag_lock = threading.Lock()
         self._updated_flag = False
 
-        # self._clock_publisher = rospy.Publisher(
-        #     "/clock", Clock, latch=False, queue_size=1
-        # )
+        self._clock_publisher = rospy.Publisher(
+            "/clock", Clock, latch=False, queue_size=10
+        )
+
+        rospy.init_node("virtual_clock")
 
     def start(self):
         # self._time = time()
@@ -98,6 +100,9 @@ class VirtualClock:
     def check_update(self):
         while self.running:
             if self._updated_flag:
+                msg = Clock()
+                msg.clock.secs = self.time
+                self._clock_publisher.publish(msg)
                 self.run_callbacks(self.callback["on_update"], args=[int(self.time)])
 
                 with self._updated_flag_lock:

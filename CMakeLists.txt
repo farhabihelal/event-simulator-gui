@@ -11,6 +11,7 @@ find_package(catkin REQUIRED
     COMPONENTS
       rospy
       std_msgs
+      rosgraph_msgs
       diagnostic_msgs
       dynamic_reconfigure
       strawberry_ros_msgs
@@ -72,6 +73,7 @@ generate_messages(
   DEPENDENCIES
     diagnostic_msgs
     std_msgs
+    rosgraph_msgs
 )
 
 ################################################
@@ -114,6 +116,7 @@ catkin_package(
     CATKIN_DEPENDS
         rospy
         std_msgs
+        rosgraph_msgs
         diagnostic_msgs
         dynamic_reconfigure
         strawberry_ros_msgs

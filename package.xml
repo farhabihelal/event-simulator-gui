@@ -54,6 +54,7 @@
 
   <build_depend>rospy</build_depend>
   <build_depend>std_msgs</build_depend>
+  <build_depend>rosgraph_msgs</build_depend>
   <build_depend>diagnostic_msgs</build_depend>
   <build_depend>idmind_tabletop_msgs</build_depend>
   <build_depend>strawberry_ros_msgs</build_depend>
@@ -63,6 +64,7 @@
   <build_export_depend>rospy</build_export_depend>
   <build_export_depend>dynamic_reconfigure</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
+  <build_export_depend>rosgraph_msgs</build_export_depend>
   <build_export_depend>diagnostic_msgs</build_export_depend>
   <build_export_depend>idmind_tabletop_msgs</build_export_depend>
   <build_export_depend>strawberry_ros_msgs</build_export_depend>
@@ -71,6 +73,7 @@
   <exec_depend>rospy</exec_depend>
   <test_depend>rostest</test_depend>
   <exec_depend>std_msgs</exec_depend>
+  <exec_depend>rosgraph_msgs</exec_depend>
   <exec_depend>diagnostic_msgs</exec_depend>
   <exec_depend>dynamic_reconfigure</exec_depend>
   <exec_depend>idmind_tabletop_msgs</exec_depend>
