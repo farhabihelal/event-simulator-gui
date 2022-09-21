@@ -111,6 +111,7 @@ class EventSimulatorGUI(ctk.CTkFrame):
     def handle_clock_command(self, request):
 
         command = request.command.lower()
+        parameter = request.parameter.lower()
 
         if command == "start":
             dispatcher.send("clock_start")
@@ -120,6 +121,12 @@ class EventSimulatorGUI(ctk.CTkFrame):
 
         elif command == "reset":
             dispatcher.send("clock_reset")
+
+        elif command == "set_time":
+            dispatcher.send("clock_set_time", datetime_str=parameter)
+
+        elif command == "set_initial_time":
+            dispatcher.send("clock_set_initial_time", datetime_str=parameter)
 
         elif command == "normal":
             dispatcher.send("clock_set_speed", multiplier=1)
@@ -137,8 +144,8 @@ class EventSimulatorGUI(ctk.CTkFrame):
 
     def init_ros(self):
 
-        rospy.Service("/vclock/cmd", ClockCommand, self.handle_clock_command)
         rospy.init_node("event_simulator_gui")
+        rospy.Service("/vclock/cmd", ClockCommand, self.handle_clock_command)
 
 
 if __name__ == "__main__":

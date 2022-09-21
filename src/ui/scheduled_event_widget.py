@@ -50,7 +50,7 @@ class ScheduledEventWidget(ctk.CTkFrame):
 if __name__ == "__main__":
 
     from event_table import ScheduledEventTable
-    from virtual_clock import VirtualClockWidget
+    from virtual_clock_widget import VirtualClockWidget
 
     app = ctk.CTk()
     app.geometry("600x400")
@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     config = {
         "table": {
-            "events": [x for x in EVENT_DEFINITIONS if x["type"] in ["scheduled"]],
+            "events": [x for x in EVENT_DEFINITIONS if x["eventType"] in ["periodic"]],
             "icons": icon_db.icons,
         },
         "clock": {

@@ -48,7 +48,7 @@ class VirtualClock:
             "/clock", Clock, latch=False, queue_size=10
         )
 
-        rospy.init_node("virtual_clock")
+        # rospy.init_node("virtual_clock")
 
     def start(self):
         # self._time = time()
@@ -110,6 +110,17 @@ class VirtualClock:
             sleep(self._sleep_time)
 
     @property
+    def initial_time(self):
+        return self._initial_time
+
+    @initial_time.setter
+    def initial_time(self, datetime_str):
+        with self._clock_lock:
+            self._initial_time = datetime.strptime(
+                datetime_str, "%Y-%m-%d %H:%M:%S"
+            ).timestamp()
+
+    @property
     def virtual_second(self):
         return self._virtual_second
 
@@ -122,6 +133,13 @@ class VirtualClock:
     def time(self) -> int:
         return int(self._time)
         # if self.running else self._time + (time() - self._launch_time)
+
+    @time.setter
+    def time(self, datetime_str):
+        with self._clock_lock:
+            self._time = datetime.strptime(
+                datetime_str, "%Y-%m-%d %H:%M:%S"
+            ).timestamp()
 
     def __repr__(self) -> str:
         return datetime.fromtimestamp(self.time).strftime("%Y-%m-%d %H:%M:%S")

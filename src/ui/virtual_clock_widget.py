@@ -35,6 +35,10 @@ class VirtualClockWidget(ctk.CTkFrame):
         dispatcher.connect(receiver=self.on_clock_stop, signal="clock_stop")
         dispatcher.connect(receiver=self.on_clock_reset, signal="clock_reset")
         dispatcher.connect(receiver=self.on_clock_set_speed, signal="clock_set_speed")
+        dispatcher.connect(receiver=self.on_clock_set_time, signal="clock_set_time")
+        dispatcher.connect(
+            receiver=self.on_clock_set_initial_time, signal="clock_set_initial_time"
+        )
 
         self.clock.callback["on_start"] = self.callback["on_start"]
         self.clock.callback["on_update"] = self.callback["on_update"]
@@ -89,6 +93,12 @@ class VirtualClockWidget(ctk.CTkFrame):
 
     def on_clock_set_speed(self, multiplier):
         self.clock.virtual_second = 60 / (multiplier * 4 * 60 * 60)
+
+    def on_clock_set_time(self, datetime_str):
+        self.clock.time = datetime_str
+
+    def on_clock_set_initial_time(self, datetime_str):
+        self.clock.initial_time = datetime_str
 
 
 if __name__ == "__main__":
