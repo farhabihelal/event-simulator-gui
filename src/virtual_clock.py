@@ -48,7 +48,8 @@ class VirtualClock:
             "/clock", Clock, latch=False, queue_size=10
         )
 
-        # rospy.init_node("virtual_clock")
+        self._pub_th = threading.Thread(target=self.publish)
+        self._pub_th.start()
 
     def start(self):
         # self._time = time()
@@ -100,14 +101,18 @@ class VirtualClock:
     def check_update(self):
         while self.running:
             if self._updated_flag:
-                msg = Clock()
-                msg.clock.secs = self.time
-                self._clock_publisher.publish(msg)
                 self.run_callbacks(self.callback["on_update"], args=[int(self.time)])
 
                 with self._updated_flag_lock:
                     self._updated_flag = False
             sleep(self._sleep_time)
+
+    def publish(self):
+        while not rospy.is_shutdown():
+            msg = Clock()
+            msg.clock.secs = self.time
+            self._clock_publisher.publish(msg)
+            sleep(self.virtual_second)
 
     @property
     def initial_time(self):

@@ -4,7 +4,9 @@ import sys
 
 sys.path.append(f"{os.path.dirname(__file__)}/../..")
 
-from .external_event import ExternalEventGUI
+if __name__ != "__main__":
+    from .external_event import ExternalEventGUI
+
 from src.icon_db import IconDB
 
 import logging
@@ -59,16 +61,22 @@ class ExternalEventWidget(ctk.CTkFrame):
 
 if __name__ == "__main__":
 
+    from external_event import ExternalEventGUI
+
     ctk.set_appearance_mode("dark")
-    ctk.set_default_color_theme("blue")
+    ctk.set_default_color_theme("dark-blue")
+
+    import rospy
+
+    rospy.init_node("external_event_widget")
 
     app = ctk.CTk()
     app.title("Event Table")
-    app.geometry()
+    app.geometry("820x460")
 
     icon_db = IconDB(f"{os.path.dirname(__file__)}/../../res/icons")
     config = {
-        "events": [x for x in EVENT_DEFINITIONS if x["type"] in ["activity"]],
+        "events": [x for x in EVENT_DEFINITIONS if x["eventType"] in ["external"]],
         "ui_confs": EVENT_UI_DEFINITIONS,
         "icons": icon_db.icons,
     }

@@ -52,8 +52,51 @@ if __name__ == "__main__":
     from event_table import ScheduledEventTable
     from virtual_clock_widget import VirtualClockWidget
 
+    from pydispatch import dispatcher
+
+    import rospy
+    from event_simulator_gui.srv import ClockCommand, ClockCommandResponse
+
+    def handle_clock_command(request):
+
+        command = request.command.lower()
+        parameter = request.parameter.lower()
+
+        if command == "start":
+            dispatcher.send("clock_start")
+
+        elif command == "stop":
+            dispatcher.send("clock_stop")
+
+        elif command == "reset":
+            dispatcher.send("clock_reset")
+
+        elif command == "set_time":
+            dispatcher.send("clock_set_time", datetime_str=parameter)
+
+        elif command == "set_initial_time":
+            dispatcher.send("clock_set_initial_time", datetime_str=parameter)
+
+        elif command == "normal":
+            dispatcher.send("clock_set_speed", multiplier=1)
+
+        elif command == "fast":
+            dispatcher.send("clock_set_speed", multiplier=4)
+
+        elif command == "faster":
+            dispatcher.send("clock_set_speed", multiplier=8)
+
+        elif command == "fastest":
+            dispatcher.send("clock_set_speed", multiplier=16)
+
+        return ClockCommandResponse()
+
+    rospy.init_node("scheduled_event_widgets")
+    rospy.Service("/vclock/cmd", ClockCommand, handle_clock_command)
+
     app = ctk.CTk()
-    app.geometry("600x400")
+    app.geometry("1120x780")
+    app.title("Scheduled Events")
 
     icon_db = IconDB(f"{os.path.dirname(__file__)}/../../res/icons")
 
@@ -64,14 +107,15 @@ if __name__ == "__main__":
         },
         "clock": {
             "vclock": {
-                "virtual_second": 1 / 7200,
-                "loop_rate": 1000,
+                "initial_time": "2023-01-01 05:00:00",
+                "virtual_second": 60 / (4 * 60 * 60),
+                "loop_rate": 200,
             },
             "icons": {
                 "play": icon_db.icons["forward-fast-solid-32"],
                 "stop": icon_db.icons["stop-solid-32"],
             },
-            "font": ("Roboto Medium", 40),
+            "font": ("Roboto Medium", 80),
         },
     }
     widget = ScheduledEventWidget(config, master=app)
