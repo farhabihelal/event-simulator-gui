@@ -1,13 +1,15 @@
 from datetime import datetime
 import os
 
-from idmind_tabletop_msgs.msg import ProjectorCommand
+from haru_encouraging_mediator_msgs.msg import UnityProjectorSetStaticImage
 
 from event_simulator_gui.srv import (
     ClockCommand,
     ClockCommandRequest,
     ClockCommandResponse,
 )
+
+from std_msgs.msg import Bool
 from rosgraph_msgs.msg import Clock
 
 import rospy
@@ -27,6 +29,8 @@ class EventDemoProjectorContronller:
             "night": (20, 4),
         }
 
+        self.clock_status = False
+
         self._current_image = None
         self._current_speed = "normal"
 
@@ -40,8 +44,8 @@ class EventDemoProjectorContronller:
         rospy.init_node("projector_controller")
 
         self._projector_pub = rospy.Publisher(
-            "/idmind_tabletop/cmd_projector",
-            ProjectorCommand,
+            "/unity_projector/static_image/cmd",
+            UnityProjectorSetStaticImage,
             latch=False,
             queue_size=10,
         )
@@ -51,6 +55,8 @@ class EventDemoProjectorContronller:
         rospy.Subscriber("/clock", Clock, self.monitor_time, queue_size=1)
         rospy.Subscriber("/clock", Clock, self.monitor_clock_speed, queue_size=1)
         rospy.Subscriber("/clock", Clock, self.monitor_day, queue_size=1)
+
+        rospy.Subscriber("/vclock/status", Bool, self.on_clock_status, queue_size=1)
 
     def load_image_files(self, path=None):
         files = os.listdir(self._config["images_path"])
@@ -62,6 +68,9 @@ class EventDemoProjectorContronller:
                 self._image_files[name.lower()] = os.path.join(
                     self._config["images_path"], file
                 )
+
+    def on_clock_status(self, msg):
+        self.clock_status = msg.data
 
     def monitor_time(self, msg):
         _datetime = datetime.fromtimestamp(msg.clock.secs)
@@ -100,7 +109,7 @@ class EventDemoProjectorContronller:
 
         if not self._day_banner_lock and hour >= 0 and hour <= 2:
             self._day_banner_lock = True
-            self.update_projector(self._image_files.get(f"day{day}_banner_v2"))
+            # self.update_projector(self._image_files.get(f"day{day}_banner_v2"))
         else:
             self._day_banner_lock = False
 
@@ -115,12 +124,15 @@ class EventDemoProjectorContronller:
 
     def update_projector(self, image_file):
 
+        if not self.clock_status:
+            return
+
         if not image_file or image_file == self._current_image:
             return
 
-        msg = ProjectorCommand()
-        msg.projector_file = image_file
-        msg.loop = True
+        msg = UnityProjectorSetStaticImage()
+        msg.activate_static_image = True
+        msg.image_file = image_file
 
         self._projector_pub.publish(msg)
 

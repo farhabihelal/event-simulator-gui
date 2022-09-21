@@ -4,6 +4,7 @@ from datetime import datetime
 import threading
 from time import sleep, time
 
+from std_msgs.msg import Bool
 from rosgraph_msgs.msg import Clock
 
 
@@ -28,7 +29,7 @@ class VirtualClock:
         self._time = self._initial_time
 
         self._launch_time = time()
-        self.running = False
+        self._running = False
 
         self._th_update = None
         self._th_update_checker = None
@@ -46,6 +47,10 @@ class VirtualClock:
 
         self._clock_publisher = rospy.Publisher(
             "/clock", Clock, latch=False, queue_size=10
+        )
+
+        self._clock_status_publisher = rospy.Publisher(
+            "/vclock/status", Bool, latch=True, queue_size=1
         )
 
         self._pub_th = threading.Thread(target=self.publish)
@@ -113,6 +118,20 @@ class VirtualClock:
             msg.clock.secs = self.time
             self._clock_publisher.publish(msg)
             sleep(self.virtual_second)
+
+    def publish_status(self):
+        msg = Bool()
+        msg.data = self.running
+        self._clock_status_publisher.publish(msg)
+
+    @property
+    def running(self):
+        return self._running
+
+    @running.setter
+    def running(self, running):
+        self._running = running
+        self.publish_status()
 
     @property
     def initial_time(self):
