@@ -66,7 +66,7 @@ class VirtualClockWidget(ctk.CTkFrame):
         self.update_time()
 
     def update_time(self):
-        self.lbl_clock.configure(text=f"{self.clock}")
+        self.lbl_clock.configure(text=f"{self.clock.display_time()}")
 
         self.lbl_clock.after(10, self.update_time)
 

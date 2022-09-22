@@ -48,8 +48,8 @@ class BaseEventGUI(ctk.CTkFrame):
                 "hasIntervalDate": f"{now.strftime('%Y-%m-%d')}",
                 "hasIntervalTime": f"{now.strftime('%H:%M:%S')}",
             },
-            "hasEatingActivity": None,
-            "isAway": None,
+            # "hasEatingActivity": None,
+            # "isAway": None,
             "hasEventParameter": self.get_event_parameters(),
         }
 

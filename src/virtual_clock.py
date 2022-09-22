@@ -168,6 +168,9 @@ class VirtualClock:
     def __repr__(self) -> str:
         return datetime.fromtimestamp(self.time).strftime("%Y-%m-%d %H:%M:%S")
 
+    def display_time(self) -> str:
+        return datetime.fromtimestamp(self.time).strftime("DAY %d %H:%M:%S")
+
     def __del__(self):
         self.stop()
 
