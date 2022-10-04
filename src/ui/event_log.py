@@ -33,6 +33,7 @@ class EventLog(ScrollableFrame):
         self.canvas.configure(height=800)
 
     def init_ros(self):
+        rospy.set_param("use_sim_time", True)
         rospy.init_node("event_log_node")
         rospy.Subscriber("/strawberry/kb/event", Event, self.on_event)
 

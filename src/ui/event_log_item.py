@@ -39,7 +39,7 @@ class EventLogItem(ctk.CTkFrame):
             anchor="center",
             text_font=("Roboto Medium", self._config["font_size"]),
             justify="center",
-            text=f"{datetime.fromtimestamp(rospy.get_time()).strftime('%Y-%m-%d %H:%M:%S')}",
+            text=f"DAY {datetime.fromtimestamp(rospy.get_time()).strftime('%d %H:%M:%S')}",
             corner_radius=8,
         )
         self.lbl_time.grid(row=0, column=1, padx=10)
