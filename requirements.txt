@@ -8,3 +8,4 @@ numpy
 matplotlib
 customtkinter
 black
+PyDispatcher
