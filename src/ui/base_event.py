@@ -8,6 +8,7 @@ import customtkinter as ctk
 
 
 from strawberry_dialogue_knowrob.msg import Event, QueryType, OntologyType
+from events_knowrob.msg import KnowledgeEvent
 
 import rospy
 
@@ -25,6 +26,10 @@ class BaseEventGUI(ctk.CTkFrame):
             self._event["hasEventSource"]["topic"], Event, latch=False, queue_size=1
         )
 
+        self.publisher_ke = rospy.Publisher(
+            "/knowledge/event", KnowledgeEvent, latch=False, queue_size=1
+        )
+
     def publish(self):
         if self.enabled:
             event = Event()
@@ -32,8 +37,27 @@ class BaseEventGUI(ctk.CTkFrame):
             event.event.payload = json.dumps(self.get_event())
 
             self.publisher.publish(event)
+            self.publish_ke()
 
             logging.debug(f"Event published : {self._event['name']}")
+
+        else:
+            logging.debug(f"Publish Ignored : {self._event['name']} is disabled.")
+
+    def publish_ke(self):
+        if self.enabled:
+            event = KnowledgeEvent()
+            event.header = rospy.Header()
+            event.context = "dialog"
+            event.instance = "external_stimuli"
+            event.type = self._event["name"]
+            event.start = rospy.Time.now()
+            event.finish = rospy.Time.now() + rospy.Duration.from_sec(1)
+            event.priority = 1
+
+            self.publisher_ke.publish(event)
+
+            logging.debug(f"Knowledge Event published : {self._event['name']}")
 
         else:
             logging.debug(f"Publish Ignored : {self._event['name']} is disabled.")
