@@ -27,7 +27,7 @@ class ScheduledEventWidget(ctk.CTkFrame):
         self.label = ctk.CTkLabel(
             master=self,
             anchor="center",
-            text_font=("Roboto Medium", 42),
+            font=("Roboto Medium", 42),
             justify="center",
             text=f"scheduled events".title(),
             corner_radius=8,
@@ -48,7 +48,6 @@ class ScheduledEventWidget(ctk.CTkFrame):
 
 
 if __name__ == "__main__":
-
     from event_table import ScheduledEventTable
     from virtual_clock_widget import VirtualClockWidget
 
@@ -58,7 +57,6 @@ if __name__ == "__main__":
     from event_simulator_gui.srv import ClockCommand, ClockCommandResponse
 
     def handle_clock_command(request):
-
         command = request.command.lower()
         parameter = request.parameter.lower()
 

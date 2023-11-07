@@ -28,7 +28,7 @@ class ExternalEventWidget(ctk.CTkFrame):
         self.label = ctk.CTkLabel(
             master=self,
             anchor="center",
-            text_font=("Roboto Medium", 42),
+            font=("Roboto Medium", 42),
             justify="center",
             text=f"external events".title(),
             corner_radius=8,
@@ -60,7 +60,6 @@ class ExternalEventWidget(ctk.CTkFrame):
 
 
 if __name__ == "__main__":
-
     from external_event import ExternalEventGUI
 
     ctk.set_appearance_mode("dark")

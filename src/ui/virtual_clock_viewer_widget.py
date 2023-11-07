@@ -45,13 +45,12 @@ class VirtualClockViewerWidget(ctk.CTkFrame):
 
     def update_time(self):
         if self.clock:
-            self.lbl_clock.configure(text=f"DAY {self.clock.strftime('%d %H:%M:%S')}")
+            self.lbl_clock.configure(text=f"{self.clock.strftime('%H:%M:%S')}")
 
         self.lbl_clock.after(10, self.update_time)
 
 
 if __name__ == "__main__":
-
     ctk.set_appearance_mode("dark")
     ctk.set_default_color_theme("blue")
 

@@ -47,7 +47,7 @@ class VirtualClockWidget(ctk.CTkFrame):
         self.lbl_clock = ctk.CTkLabel(
             master=self,
             text=f"{self.clock}",
-            text_font=self._config["font"],
+            font=self._config["font"],
             anchor="center",
             corner_radius=10,
         )
@@ -102,7 +102,6 @@ class VirtualClockWidget(ctk.CTkFrame):
 
 
 if __name__ == "__main__":
-
     ctk.set_appearance_mode("dark")
     ctk.set_default_color_theme("blue")
 

@@ -50,9 +50,9 @@ class EventSimulatorGUI(ctk.CTkFrame):
 
         self.lbl_title = ctk.CTkLabel(
             master=self,
-            name="lbl_title",
+            # name="lbl_title",
             text="event simulator".upper(),
-            text_font=("Roboto Medium", 42),
+            font=("Roboto Medium", 42),
             anchor="center",
             corner_radius=8,
         )
@@ -109,7 +109,6 @@ class EventSimulatorGUI(ctk.CTkFrame):
         )
 
     def handle_clock_command(self, request):
-
         command = request.command.lower()
         parameter = request.parameter.lower()
 
@@ -143,13 +142,11 @@ class EventSimulatorGUI(ctk.CTkFrame):
         return ClockCommandResponse()
 
     def init_ros(self):
-
         rospy.init_node("event_simulator_gui")
         rospy.Service("/vclock/cmd", ClockCommand, self.handle_clock_command)
 
 
 if __name__ == "__main__":
-
     ctk.set_appearance_mode("dark")
     ctk.set_default_color_theme("dark-blue")
 

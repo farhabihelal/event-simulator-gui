@@ -15,10 +15,10 @@ class ExternalEventGUI(BaseEventGUI):
             master=self,
             text=self._event["name"].replace("-", " ").title(),
             command=self.btn_handler,
-            name=self._event["name"],
+            # name=self._event["name"],
             image=self._config["ui"]["image"],
             compound=tk.TOP,
-            text_font=self._config["font"],
+            font=self._config["font"],
             width=250,
         )
         self.button.pack(

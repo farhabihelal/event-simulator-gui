@@ -24,7 +24,6 @@ import customtkinter as ctk
 
 class EventTableHeader(ctk.CTkFrame):
     def __init__(self, *args, **kwargs):
-
         super().__init__(*args, **kwargs)
 
         self.lbl_state = ctk.CTkLabel(
@@ -82,7 +81,6 @@ class EventTableHeader(ctk.CTkFrame):
 
 class ScheduledEventTableItem(BaseEventGUI):
     def __init__(self, config, *args, **kwargs):
-
         self.row_idx = kwargs.pop("row_idx", 0)
         self.col_idx = kwargs.pop("col_idx", 0)
 
@@ -126,7 +124,7 @@ class ScheduledEventTableItem(BaseEventGUI):
             anchor="w",
             corner_radius=10,
             text=f"{self.event_name}",
-            text_font=("Roboto Medium", 10),
+            font=("Roboto Medium", 10),
             # width=200,
             image=self._config["icon"],
             compound="top",
@@ -145,7 +143,7 @@ class ScheduledEventTableItem(BaseEventGUI):
             anchor="w",
             corner_radius=10,
             text=f"{self._schedule}".title(),
-            text_font=("Roboto Medium", 12),
+            font=("Roboto Medium", 12),
             width=200,
         )
 
@@ -172,7 +170,6 @@ class ScheduledEventTableItem(BaseEventGUI):
         return
 
     def handle_clock_update(self):
-
         if self.enabled:
             _datetime = datetime.fromtimestamp(self._current_time)
             _time = _datetime.time()
@@ -183,7 +180,7 @@ class ScheduledEventTableItem(BaseEventGUI):
                     and _time.minute == self._schedule._datetime.minute
                 ):
                     self.publish()
-                    self.cb_state.after(250, self.reset)
+                    self.cb_state.after(500, self.reset)
             else:
                 if (
                     _datetime.date() == self._schedule._datetime.date()
