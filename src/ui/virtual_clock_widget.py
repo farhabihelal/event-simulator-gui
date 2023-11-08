@@ -25,6 +25,8 @@ class VirtualClockWidget(ctk.CTkFrame):
 
         self.clock = VirtualClock(self._config["vclock"])
 
+        self._clock_multiplier = 1
+
         self.callback = {
             "on_start": [],
             "on_update": [],
@@ -54,6 +56,15 @@ class VirtualClockWidget(ctk.CTkFrame):
 
         self.lbl_clock.grid(row=0, column=0, columnspan=3, padx=5, pady=5)
 
+        self.btn_rewind = ctk.CTkButton(
+            master=self,
+            image=self._icons["rewind"],
+            text="",
+            command=self.on_button_click_rewind,
+            width=50,
+        )
+        self.btn_rewind.grid(row=0, column=4, padx=5, pady=5)
+
         self.btn_start_stop = ctk.CTkButton(
             master=self,
             image=self._icons["play"],
@@ -61,7 +72,25 @@ class VirtualClockWidget(ctk.CTkFrame):
             command=self.on_button_click,
             width=50,
         )
-        self.btn_start_stop.grid(row=0, column=4, padx=5, pady=5)
+        self.btn_start_stop.grid(row=0, column=5, padx=5, pady=5)
+
+        self.btn_forward = ctk.CTkButton(
+            master=self,
+            image=self._icons["forward"],
+            text="",
+            command=self.on_button_click_forward,
+            width=50,
+        )
+        self.btn_forward.grid(row=0, column=6, padx=5, pady=5)
+
+        self.btn_reset = ctk.CTkButton(
+            master=self,
+            image=self._icons["reset"],
+            text="",
+            command=self.on_button_click_reset,
+            width=50,
+        )
+        self.btn_reset.grid(row=0, column=7, padx=5, pady=5)
 
         self.update_time()
 
@@ -73,10 +102,31 @@ class VirtualClockWidget(ctk.CTkFrame):
     def on_button_click(self):
         if self.clock.running:
             self.btn_start_stop.configure(image=self._icons["play"])
+            # self.btn_fast.configure(state=["disabled"])
+            # self.btn_faster.configure(state=["disabled"])
             self.clock.stop()
         else:
             self.btn_start_stop.configure(image=self._icons["stop"])
+            # self.btn_fast.configure(state=["normal"])
+            # self.btn_faster.configure(state=["normal"])
             self.clock.start()
+
+    def on_button_click_fast(self):
+        self.on_clock_set_speed(4)
+
+    def on_button_click_faster(self):
+        self.on_clock_set_speed(8)
+
+    def on_button_click_forward(self):
+        self._clock_multiplier *= 2
+        self.on_clock_set_speed(self._clock_multiplier)
+
+    def on_button_click_rewind(self):
+        self._clock_multiplier /= 2
+        self.on_clock_set_speed(self._clock_multiplier)
+
+    def on_button_click_reset(self):
+        self.on_clock_reset()
 
     def on_clock_start(self):
         if not self.clock.running:
@@ -87,6 +137,7 @@ class VirtualClockWidget(ctk.CTkFrame):
             self.on_button_click()
 
     def on_clock_reset(self):
+        self._clock_multiplier = 1
         self.clock.reset()
         self.btn_start_stop.configure(image=self._icons["play"])
         self.clock.virtual_second = 60 / (4 * 60 * 60)
@@ -102,8 +153,12 @@ class VirtualClockWidget(ctk.CTkFrame):
 
 
 if __name__ == "__main__":
+    import rospy
+
     ctk.set_appearance_mode("dark")
     ctk.set_default_color_theme("blue")
+
+    rospy.init_node("virtual_clock_widget")
 
     app = ctk.CTk()
     app.title("Virtual Clock")
@@ -116,10 +171,13 @@ if __name__ == "__main__":
             "virtual_second": 60 / (4 * 60 * 60),
             "loop_rate": 200,
             "refresh_rate": 1000,
-            "initial_time": "2100-10-10 05:00:00",
+            "initial_time": "2000-01-01 06:00:00",
         },
         "icons": {
-            "play": icon_db.icons["forward-fast-solid-32"],
+            "play": icon_db.icons["play-32"],
+            "forward": icon_db.icons["fast-32"],
+            "rewind": icon_db.icons["rewind-32"],
+            "reset": icon_db.icons["reset-32"],
             "stop": icon_db.icons["stop-solid-32"],
         },
         "font": ("Roboto Medium", 40),

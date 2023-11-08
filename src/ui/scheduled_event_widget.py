@@ -110,7 +110,10 @@ if __name__ == "__main__":
                 "loop_rate": 200,
             },
             "icons": {
-                "play": icon_db.icons["forward-fast-solid-32"],
+                "play": icon_db.icons["play-32"],
+                "forward": icon_db.icons["fast-32"],
+                "rewind": icon_db.icons["rewind-32"],
+                "reset": icon_db.icons["reset-32"],
                 "stop": icon_db.icons["stop-solid-32"],
             },
             "font": ("Roboto Medium", 80),
