@@ -85,7 +85,7 @@ class EventSimulatorGUI(ctk.CTkFrame):
                     "virtual_second": 60 / (4 * 60 * 60),
                     "loop_rate": 200,
                     "refresh_rate": 1000,
-                    "initial_time": "2122-09-09 05:00:00",
+                    "initial_time": "2023-01-01 06:00:00",
                 },
                 "icons": {
                     "play": icon_db.icons["forward-fast-solid-32"],
