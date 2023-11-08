@@ -214,8 +214,8 @@ class ScheduledEventTableItem(BaseEventGUI):
         self.cb_state.select()
         self.cb_state.configure(state=tk.NORMAL)
 
-        self.configure(bg_color=None)
-        self.lbl_event_name.configure(bg_color=None)
+        self.configure(bg_color="transparent")
+        self.lbl_event_name.configure(bg_color="transparent")
         self.lbl_schedule.configure(text_color="white")
 
     def __del__(self):
