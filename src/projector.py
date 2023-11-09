@@ -17,7 +17,6 @@ import rospy
 
 class EventDemoProjectorContronller:
     def __init__(self, config) -> None:
-
         self._config = config
 
         self._image_files = {}
@@ -65,8 +64,8 @@ class EventDemoProjectorContronller:
             name, ext = os.path.splitext(file)
 
             if ext.lower() == ".png":
-                self._image_files[name.lower()] = os.path.join(
-                    self._config["images_path"], file
+                self._image_files[name.lower()] = os.path.abspath(
+                    os.path.join(self._config["images_path"], file)
                 )
 
     def on_clock_status(self, msg):
@@ -114,7 +113,6 @@ class EventDemoProjectorContronller:
             self._day_banner_lock = False
 
     def command_clock(self, command="reset", parameter=""):
-
         req = ClockCommandRequest()
 
         req.command = command
@@ -123,9 +121,8 @@ class EventDemoProjectorContronller:
         self._clock_cmd_client(req)
 
     def update_projector(self, image_file):
-
-        if not self.clock_status:
-            return
+        # if not self.clock_status:
+        #     return
 
         if not image_file or image_file == self._current_image:
             return
@@ -143,7 +140,6 @@ class EventDemoProjectorContronller:
 
 
 if __name__ == "__main__":
-
     config = {
         "images_path": f"{os.path.dirname(__file__)}/../res/images",
     }
